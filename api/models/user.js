@@ -66,6 +66,15 @@ UserSchema.methods = {
         const userObject = user.toObject();
         return _.pick(userObject, ['_id', 'email']);   
     },
+    removeToken : function (token) {
+        const user = this;
+        return user.update({
+            $pull: {
+                tokens: {token}
+            }
+        });
+        
+    }
 }
 
 UserSchema.statics = {
