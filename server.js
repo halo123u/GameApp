@@ -18,5 +18,7 @@ app.listen(port);
 const userRoutes = require('./api/routes/userRoutes');
 app.use('/users', userRoutes);
 
+const gameApiRoutes = require('./api/routes/gameRoutes');
+app.use('/gameApi', gameApiRoutes);
 
 console.log('todo list RESTful API server started on: l' + port);
