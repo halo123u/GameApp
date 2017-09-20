@@ -131,11 +131,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar handleNav={this.handleNav} auth={this.state.auth} userId={this.state.userId} handlelogout={this.handleLogOut}/>
-          {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
-          <Switch>
-            <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
-            <Route exact path='/dashboard' component={Dashboard}/>
-          </Switch>
+          <div className="pageBody">
+            {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
+            <Switch>
+              <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
+              <Route exact path='/dashboard' component={Dashboard}/>
+            </Switch>
+          </div>
         </div>
       </Router>
     );
