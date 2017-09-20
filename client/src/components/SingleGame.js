@@ -7,7 +7,7 @@ class SingleGame extends Component{
     render(){
         return(
             <div className="Game">
-                <h2>{this.props.gameData.name}</h2>
+                <h3>{this.props.gameData.name}</h3>
                 <img className="coverArt" src={this.props.gameData.cover.url}/>
                 <p>{this.props.gameData.summary}</p>
                 <a href={this.props.gameData.url} target="_blank" >More Info</a>
