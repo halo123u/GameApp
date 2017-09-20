@@ -10,6 +10,11 @@ const userController = {
             console.log(err);
             res.send(err);
         })
+    },
+    getUserInfo : (req,res)=>{
+        res.send({user :req.user,
+            auth: true});
+        
     }, 
     createUser : (req,res) => {
         let body = _.pick(req.body,['email','password']);
