@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SingleGame from './SingleGame';
 import axios from 'axios';  
 
 class DashBoard extends Component{
@@ -13,12 +14,28 @@ class DashBoard extends Component{
         let header = { 'x-auth' : this.props.token };
         axios.get('/gameApi/popular',{headers : header} ).then(res=>{
             console.log(res);
+            this.setState({
+                apiData : res.data,
+                dataLoaded :true
+            });
         })
     }
     render(){
-        return(
-            <h1>hello this is the DashBoard</h1>
-        )
+        if(this.state.dataLoaded){
+            return(
+                <div>
+                <h1>Top Games</h1>
+                {this.state.apiData.map(game=>{
+                    return <SingleGame key={game.id} gameData={game}/>
+                })}
+            </div>
+            )
+        }
+        else{
+            return(
+                <h1>Loading...........</h1>
+            )
+        }
     }
 }
 
