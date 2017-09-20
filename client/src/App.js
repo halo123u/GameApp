@@ -135,7 +135,7 @@ class App extends Component {
             {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
             <Switch>
               <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
-              <Route exact path='/dashboard' component={Dashboard}/>
+              <Route exact path='/dashboard' component={()=><Dashboard token={this.state.token} auth={this.state.auth}/>}/>
             </Switch>
           </div>
         </div>
