@@ -26,7 +26,14 @@
 .pageBody{
   margin-top: 100px;
 }
+.gameContainer {
+  display: flex;
+  flex-flow: wrap;
+}
+.Game{
+  width: 30%;
 
+}
 /* .coverArt{
   height: 500px;
   width: 250px; 

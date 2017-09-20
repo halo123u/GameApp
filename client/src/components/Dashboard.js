@@ -24,11 +24,13 @@ class DashBoard extends Component{
         if(this.state.dataLoaded){
             return(
                 <div>
-                <h1>Top Games</h1>
-                {this.state.apiData.map(game=>{
-                    return <SingleGame key={game.id} gameData={game}/>
-                })}
-            </div>
+                    <h1>Top Games</h1>
+                    <div className="gameContainer">
+                        {this.state.apiData.map(game=>{
+                            return <SingleGame key={game.id} gameData={game}/>
+                        })}
+                    </div>
+                </div>
             )
         }
         else{
