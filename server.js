@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 const bodyParse = require('body-parser');
+const User = require('./api/models/user');
 require("dotenv").config();
 // const Promise = require('bluebird');
 // Promise.promisifyAll(mongoose);
