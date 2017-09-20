@@ -25,6 +25,17 @@ const userController = {
             res.status(400).send(err);
         });
     },
+    signIn : (req,res) => {
+        let body = _.pick(req.body,['email', 'password']);
+        User.findByCredentials(body.email,body.password).then((user)=>{
+            user.generateAuthToken().then(token => {
+                res.header('x-auth',token ).send({user,
+                auth: true});
+            })
+        }).catch(e=>{
+            res.status(400).send();
+        })
+    },
 
 }
 
