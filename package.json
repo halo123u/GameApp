@@ -13,6 +13,7 @@
     "body-parser": "^1.18.1",
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
-    "mongoose": "^4.11.12"
+    "mongoose": "^4.11.12",
+    "validator": "^8.2.0"
   }
 }
