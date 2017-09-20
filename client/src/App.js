@@ -9,6 +9,7 @@ import {
 
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import Navbar from './components/Navbar';
 
 class App extends Component {
   constructor(){
@@ -53,7 +54,14 @@ class App extends Component {
 		}else{
 			return false
 		}
-	}
+  }
+  
+  handleNav = (currentPage, redirect) => {
+    this.setState({
+      redirect,
+      currentPage
+    });
+  }
 
   handleSignUp = (e, email, password)=>{
     e.preventDefault();
@@ -122,6 +130,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <Navbar handleNav = {this.handleNav} />
           {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
           {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
           <Switch>
