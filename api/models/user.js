@@ -34,6 +34,19 @@ const UserSchema =  new Schema({
         }
     }]
 });
+UserSchema.pre('save', function (next) {
+    const user = this;
+    if(user.isModified('password')){
+        bcrypt.genSalt(10, (err, salt)=>{
+            bcrypt.hash(user.password,salt,(err,hash)=>{
+                user.password= hash;
+                next();
+            });    
+        });
+    }else{
+        next();
+    }
+})
 
 UserSchema.methods = {
     generateAuthToken: function () {
