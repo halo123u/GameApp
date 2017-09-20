@@ -61,6 +61,11 @@ UserSchema.methods = {
             return token;
         });
     },
+    toJSON: function () {
+        const user = this;
+        const userObject = user.toObject();
+        return _.pick(userObject, ['_id', 'email']);   
+    },
 }
 
 UserSchema.statics = {
