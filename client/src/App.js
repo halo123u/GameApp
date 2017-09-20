@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import {
@@ -10,10 +11,116 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state ={
+      redirect :false,
+      currentPage: '/',
+      userId : null,
+      auth : false,
+      email : null,
+      gamertag : null,
+      token  :null
+    }
+  }
+
+  componentDidMount() {
+    let token = localStorage.getItem('token');
+    if(token){
+    let header = { 'x-auth' : token };
+    axios.get('/users/me',{ headers : header }).then( res=>{
+      console.log(res);
+      this.setState({
+        auth: res.data.auth,
+        userId : res.data.user._id,
+        email : res.data.user.email,
+        token : token
+      });
+    }).catch(err=>{
+      console.log(err);
+    });
+    }
+  }
+
+  componentWillUpdate = (prevState, nextState) => {
+		if(nextState.redirect){
+			this.setState({
+				redirect: false,
+				currentPage: '/'
+			});
+			return true;
+		}else{
+			return false
+		}
+	}
+
+  handleSignUp = (e, email, password)=>{
+    e.preventDefault();
+    axios.post('/users',{
+      email,
+      password 
+    }).then(res => {
+      console.log(res);
+      this.setState({
+        auth: res.data.auth,
+        userId : res.data.user._id,
+        email : res.data.user.email,
+        token : res.headers['x-auth'],
+        redirect: true,
+        currentPage: '/dashboard'  
+      },()=>{
+        localStorage.setItem('token',res.headers[`x-auth`]);
+      });
+    }).catch(err=>{
+      console.log(err);
+    });
+  }
+  
+
+  handleLoginSubmit = (e,email, password)=>{
+    e.preventDefault();
+    axios.post('/users/login',{
+      email,
+      password 
+    }).then(res => {
+      console.log(res);
+      this.setState({
+        auth: res.data.auth,
+        userId : res.data.user._id,
+        email : res.data.user.email, 
+        token : res.headers['x-auth'],
+        redirect :true,
+        currentPage: '/dashboard' 
+      });
+      console.log(res.headers['x-auth']);
+      localStorage.setItem('token',res.headers[`x-auth`]);
+    }).catch(err=>{
+      console.log(err);
+    });
+  }
+  handleLogOut = ()=>{
+    let token = localStorage.getItem('token');
+    let header = { 'x-auth' : token };
+    axios.delete('/users/me/token',{headers : header} ).then(res=>{
+      console.log(res)
+      this.setState({
+        auth: false,
+        userId : null,
+        email : null, 
+        token : null,
+        redirect: true,
+        currentPage: '/'
+      })
+      localStorage.removeItem('token');
+    }).catch(err=>{
+      console.log(err);
+    })
+  }
   render() {
     return (
       <Router>
         <div className="App">
+        {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
           <Switch>
             <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
             <Route exact path='/dashboard' component={Dashboard}/>
