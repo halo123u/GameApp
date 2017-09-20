@@ -19,7 +19,6 @@ class App extends Component {
       userId : null,
       auth : false,
       email : null,
-      gamertag : null,
       token  :null
     }
   }
@@ -34,7 +33,9 @@ class App extends Component {
         auth: res.data.auth,
         userId : res.data.user._id,
         email : res.data.user.email,
-        token : token
+        token : token,
+        redirect: true,
+        currentPage: '/dashboard'
       });
     }).catch(err=>{
       console.log(err);
@@ -56,6 +57,7 @@ class App extends Component {
 
   handleSignUp = (e, email, password)=>{
     e.preventDefault();
+    console.log(email, password);
     axios.post('/users',{
       email,
       password 
@@ -120,7 +122,8 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-        {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
+          {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
+          {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
           <Switch>
             <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
             <Route exact path='/dashboard' component={Dashboard}/>
