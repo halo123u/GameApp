@@ -130,9 +130,8 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar handleNav = {this.handleNav} />
+          <Navbar handleNav={this.handleNav} auth={this.state.auth} userId={this.state.userId} handlelogout={this.handleLogOut}/>
           {this.state.redirect ? (<Redirect to={`${this.state.currentPage}`}/>): null}    
-          {(this.state.auth) ? <input type="button" value="Logout" onClick={this.handleLogOut} /> :  null}
           <Switch>
             <Route exact path='/' component={()=><Login login={this.handleLoginSubmit} signup={this.handleSignUp}/>}/>
             <Route exact path='/dashboard' component={Dashboard}/>
