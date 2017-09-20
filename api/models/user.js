@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
@@ -17,10 +18,6 @@ const UserSchema =  new Schema({
         }
 
     },
-    gamertag:{
-        type :String,
-        required: true,
-    },
     password: {
         type: String,
         require: true,
@@ -37,6 +34,19 @@ const UserSchema =  new Schema({
         }
     }]
 });
+
+UserSchema.methods = {
+    generateAuthToken: function () {
+        const user = this;        
+        const access = 'auth';
+        const token = jwt.sign({_id:  user._id.toHexString(), access},'abc123').toString();
+
+        user.tokens.push({access, token});
+        return user.save().then(()=>{
+            return token;
+        });
+    },
+}
 
 const User = mongoose.model('User', UserSchema);
 module.exports = User;
