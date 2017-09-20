@@ -14,5 +14,8 @@ app.use(bodyParse.json());
 
 app.listen(port);
 
+const userRoutes = require('./api/routes/userRoutes');
+app.use('/users', userRoutes);
+
 
 console.log('todo list RESTful API server started on: l' + port);
